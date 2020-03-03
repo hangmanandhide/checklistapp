@@ -43,14 +43,8 @@ class ChecklistViewController: UITableViewController {
     }
     
     override func setEditing(_ editing: Bool, animated: Bool) {
-        if (editing) {
             super.setEditing(editing, animated: true)
-            tableView.setEditing(tableView.isEditing, animated: true)
-            self.navigationItem.rightBarButtonItem!.isEnabled = false
-        } else {
-            super.setEditing(false, animated: true)
-            self.navigationItem.rightBarButtonItem!.isEnabled = true
-        }
+        tableView.setEditing(tableView.isEnabled!.editing, animated: true)
     }
     
     
