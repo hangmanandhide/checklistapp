@@ -19,8 +19,9 @@ class ChecklistViewController: UITableViewController {
         super.init(coder: aDecoder)
     }
     
+    
+    
     @IBAction func deleteItems(_ sender: Any) {
-        weak var deleteBarButton: UIBarButtonItem!
         if let selectedRows = tableView.indexPathsForSelectedRows {
             var items = [CheckListItem]()
             for indexPath in selectedRows {
@@ -33,18 +34,25 @@ class ChecklistViewController: UITableViewController {
         }
     }
     
+    @IBOutlet weak var deleteBarButtonItem: UIBarButtonItem!
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.leftBarButtonItem = editButtonItem
         tableView.allowsMultipleSelectionDuringEditing = true
+        deleteBarButtonItem.isEnabled = isEditing
+        
         
     }
     
     override func setEditing(_ editing: Bool, animated: Bool) {
+            deleteBarButtonItem.isEnabled = editing
             super.setEditing(editing, animated: true)
-        tableView.setEditing(tableView.isEnabled!.editing, animated: true)
+            tableView.setEditing(tableView.isEditing, animated: true)
+            self.navigationItem.rightBarButtonItem!.isEnabled = !editing
     }
     
     
@@ -54,6 +62,8 @@ class ChecklistViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ChecklistItem", for: indexPath)
+        cell.accessoryType = tableView.isEditing ? .none : .disclosureIndicator
+        
         let item = todoList.todos[indexPath.row]
         
         configureText(for: cell, with: item)
